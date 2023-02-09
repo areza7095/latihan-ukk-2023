@@ -1,0 +1,54 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Masyarakat {
+  nik    Int    @id @default(autoincrement())
+  nama String
+  username String
+  password String
+  telp String
+  pengaduan Pengaduan[]
+}
+
+model Pengaduan {
+  id_pengaduan       Int  @id @default(autoincrement())
+  author   Masyarakat @relation(fields: [nik], references: [nik])
+  nik Int
+  isi_laporan String
+  foto String
+  tanggapan Tanggapan?
+}
+
+model Petugas {
+  id_petugas    Int    @id @default(autoincrement())
+  nama_petugas String
+  username String
+  password String
+  telp String
+  tanggapan Tanggapan[]
+}
+
+//petugas kurang level
+
+model Tanggapan {
+  id_tanggapan       Int  @id @default(autoincrement())
+  author   Petugas @relation(fields: [id_petugas], references: [id_petugas])
+  user   Pengaduan @relation(fields: [id_pengaduan], references: [id_pengaduan])
+  tgl_tanggapan DateTime
+  tanggapan String
+  id_petugas Int
+  id_pengaduan Int @unique
+}
+
+
+
+// pengaduan blm ada enum
