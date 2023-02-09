@@ -11,11 +11,11 @@ datasource db {
 }
 
 model Masyarakat {
-  nik    Int    @id @default(autoincrement())
+  nik    Int    @id @unique
   nama String
-  username String
+  username String @unique
   password String
-  telp String
+  telp Int
   pengaduan Pengaduan[]
 }
 
@@ -29,11 +29,11 @@ model Pengaduan {
 }
 
 model Petugas {
-  id_petugas    Int    @id @default(autoincrement())
+  id_petugas    Int    @id @unique
   nama_petugas String
-  username String
+  username String @unique
   password String
-  telp String
+  telp Int
   tanggapan Tanggapan[]
 }
 
@@ -41,7 +41,7 @@ model Petugas {
 
 model Tanggapan {
   id_tanggapan       Int  @id @default(autoincrement())
-  author   Petugas @relation(fields: [id_petugas], references: [id_petugas])
+  petugas   Petugas @relation(fields: [id_petugas], references: [id_petugas])
   user   Pengaduan @relation(fields: [id_pengaduan], references: [id_pengaduan])
   tgl_tanggapan DateTime
   tanggapan String

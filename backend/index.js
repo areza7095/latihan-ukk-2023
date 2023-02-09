@@ -7,6 +7,8 @@ dotenv.config();
 
 //import Router
 import AuthRoute from "./routes/AuthRoute.js"
+import PengaduanRoute from "./routes/PengaduanRoute.js"
+import TanggapanRoute from "./routes/TanggapanRoute.js"
 // import ExampleRoute from "./routes/ExampleRoute.js"
 // import UserAttendanceRoute from "./routes/AttendanceRoute.js"
 // import EreportRoute from "./routes/EreportRoute.js"
@@ -20,6 +22,8 @@ app.use(cors())
 
 app.use(express.json());
 app.use(AuthRoute);
+app.use(PengaduanRoute)
+app.use(TanggapanRoute)
 
 
 // listen
