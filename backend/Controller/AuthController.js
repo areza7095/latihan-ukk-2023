@@ -13,6 +13,7 @@ export const RegisterMasyarakat = async (req, res) => {
   const { error } = RegisterValidationMasyarakat(req.body);
   const { nik, username, nama, password, telp } = req.body;
 
+
   if (error)
     return res.status(400).json({
       status: res.statusCode,

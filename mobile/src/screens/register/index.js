@@ -8,13 +8,71 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import {masyarakat_login} from '../../api/user_api';
+import {masyarakat_register} from '../../api/user_api';
 import {Eye, EyeActive} from '../../assets';
 
-export default function Login({navigation}) {
+export default function Register({navigation}) {
+  const [nik, setNik] = useState('');
+  const [nama, setNama] = useState('');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [telp, setTelp] = useState('');
   const [seePassword, setSeePassword] = useState(true);
+
+  const checkNikValidity = value => {
+    const isNonWhiteSpace = /^\S*$/;
+    if (!isNonWhiteSpace.test(value)) {
+      return 'NIK must not contain Whitespaces.';
+    }
+
+    const isContainsNumber = /^(?=.*[0-9]).*$/;
+    if (!isContainsNumber.test(value)) {
+      return 'NIk must contain at least one Digit.';
+    }
+
+    const isValidLength = /^.{6}$/;
+    if (!isValidLength.test(value)) {
+      return 'NIK must be 16 Characters Long.';
+    }
+
+    // const isContainsSymbol =
+    //   /^(?=.*[~`!@#$%^&*()--+={}\[\]|\\:;"'<>,.?/_₹]).*$/;
+    // if (!isContainsSymbol.test(value)) {
+    //   return 'Password must contain at least one Special Symbol.';
+    // }
+
+    return null;
+  };
+
+  const checkNameValidity = value => {
+    const isNonWhiteSpace = /^\S*$/;
+    if (!isNonWhiteSpace.test(value)) {
+      return 'Name must not contain Whitespaces.';
+    }
+
+    // const isContainsSymbol =
+    //   /^(?=.*[~`!@#$%^&*()--+={}\[\]|\\:;"'<>,.?/_₹]).*$/;
+    // if (!isContainsSymbol.test(value)) {
+    //   return 'Password must contain at least one Special Symbol.';
+    // }
+
+    return null;
+  };
+
+  const checkUsernameValidity = value => {
+    const isNonWhiteSpace = /^\S*$/;
+    if (!isNonWhiteSpace.test(value)) {
+      return 'Name must not contain Whitespaces.';
+    }
+
+    // const isContainsSymbol =
+    //   /^(?=.*[~`!@#$%^&*()--+={}\[\]|\\:;"'<>,.?/_₹]).*$/;
+    // if (!isContainsSymbol.test(value)) {
+    //   return 'Password must contain at least one Special Symbol.';
+    // }
+
+    return null;
+  };
 
 
   const checkPasswordValidity = value => {
@@ -52,20 +110,39 @@ export default function Login({navigation}) {
     return null;
   };
 
-  const handleLogin = () => {
+  const checkTelpValidity = value => {
+    const isNonWhiteSpace = /^\S*$/;
+    if (!isNonWhiteSpace.test(value)) {
+      return 'Password must not contain Whitespaces.';
+    }
+
+    const isValidLength = /^.{10,16}$/;
+    if (!isValidLength.test(value)) {
+      return 'Password must be 10-16 Characters Long.';
+    }
+
+
+    return null;
+  };
+
+  const handleRegister = () => {
+    const checkNik = checkNikValidity(nik);
+    const checkName = checkNameValidity(nama);
+    const checkUsername = checkUsernameValidity(username);
     const checkPassowrd = checkPasswordValidity(password);
-    if (!checkPassowrd) {
-      masyarakat_login({
+    const checkTelp = checkTelpValidity(telp);
+    if (!checkNik || !checkUsername || !checkName || !checkPassowrd || !checkTelp) {
+      masyarakat_register({
+        nik: parseInt(nik),
+        nama: nama.toUpperCase(),
         username: username.toLocaleLowerCase(),
         password: password,
+        telp: parseInt(telp)
       })
         .then(result => {
           if (result.status == 200) {
-            const nikInt = result.data.nik;
-            const nikString = nikInt.toString()
-            AsyncStorage.setItem('AccessToken', result.data.accessToken);
-            AsyncStorage.setItem('nik', nikString);
-            navigation.replace('Home');
+            alert("Akun anda Berhasil Dibuat, Silahkan Login");
+            navigation.replace('Login');
           } else {
             alert(result.message)
           }
@@ -78,13 +155,24 @@ export default function Login({navigation}) {
     }
   };
 
-  const handleRegister = () => {
-    navigation.replace('Register');
-
-  };
-
   return (
     <View style={styles.container}>
+      <View style={styles.wrapperInput}>
+        <TextInput
+          style={styles.input}
+          placeholder="NIK"
+          value={nik}
+          onChangeText={text => setNik(text)}
+        />
+      </View>
+      <View style={styles.wrapperInput}>
+        <TextInput
+          style={styles.input}
+          placeholder="Nama"
+          value={nama}
+          onChangeText={text => setNama(text)}
+        />
+      </View>
       <View style={styles.wrapperInput}>
         <TextInput
           style={styles.input}
@@ -107,21 +195,26 @@ export default function Login({navigation}) {
           <Image source={seePassword ? Eye : EyeActive} style={styles.icon} />
         </TouchableOpacity>
       </View>
-      {username == '' || password == ''  ? (
+      <View style={styles.wrapperInput}>
+        <TextInput
+          style={styles.input}
+          placeholder="No Telepon"
+          value={telp}
+          onChangeText={text => setTelp(text)}
+        />
+      </View>
+      {nik == '' || nama == '' || username == '' || password == ''  ? (
         <TouchableOpacity
           disabled
           style={styles.buttonDisable}
-          onPress={handleLogin}>
-          <Text style={styles.text}>Login</Text>
-        </TouchableOpacity>
-      ) : (
-        <TouchableOpacity style={styles.button} onPress={handleLogin}>
-          <Text style={styles.text}>Login</Text>
-        </TouchableOpacity>
-      )}
-      <TouchableOpacity style={styles.buttonRegister} onPress={handleRegister}>
+          onPress={handleRegister}>
           <Text style={styles.text}>Register</Text>
         </TouchableOpacity>
+      ) : (
+        <TouchableOpacity style={styles.button} onPress={handleRegister}>
+          <Text style={styles.text}>Register</Text>
+        </TouchableOpacity>
+      )}
     </View>
   );
 }
@@ -157,14 +250,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: 'orange',
-    borderRadius: 5,
-    marginTop: 25,
-  },
-  buttonRegister: {
-    padding: 10,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: 'blue',
     borderRadius: 5,
     marginTop: 25,
   },

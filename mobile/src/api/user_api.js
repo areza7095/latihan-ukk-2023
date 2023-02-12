@@ -11,13 +11,13 @@ export const masyarakat_login = async data => {
     });
     return result;
   } catch (error) {
-    return error;
+    return JSON.parse(error.request._response);
   }
 };
 
-export const user_login = async data => {
+export const masyarakat_register = async data => {
   try {
-    const result = await ApiManager('/masyarakat/login', {
+    const result = await ApiManager('/masyarakat/register', {
       method: 'POST',
       headers: {
         'content-type': 'application/json',
@@ -26,6 +26,6 @@ export const user_login = async data => {
     });
     return result;
   } catch (error) {
-    return error;
+    return JSON.parse(error.request._response);
   }
 };
