@@ -35,12 +35,6 @@ export default function Register({navigation}) {
       return 'NIK must be 16 Characters Long.';
     }
 
-    // const isContainsSymbol =
-    //   /^(?=.*[~`!@#$%^&*()--+={}\[\]|\\:;"'<>,.?/_₹]).*$/;
-    // if (!isContainsSymbol.test(value)) {
-    //   return 'Password must contain at least one Special Symbol.';
-    // }
-
     return null;
   };
 
