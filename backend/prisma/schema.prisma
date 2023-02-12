@@ -11,44 +11,43 @@ datasource db {
 }
 
 model Masyarakat {
-  nik    Int    @id @unique
-  nama String
-  username String @unique
-  password String
-  telp Int
+  nik       String      @id @unique @db.Char(16)
+  nama      String      @db.VarChar(35)
+  username  String      @unique @db.VarChar(25)
+  password  String      
+  telp      String      @db.VarChar(13)
   pengaduan Pengaduan[]
 }
 
 model Pengaduan {
-  id_pengaduan       Int  @id @default(autoincrement())
-  author   Masyarakat @relation(fields: [nik], references: [nik])
-  nik Int
-  isi_laporan String
-  foto String
-  tanggapan Tanggapan?
+  id_pengaduan  Int        @id @default(autoincrement()) @db.Int 
+  author        Masyarakat @relation(fields: [nik], references: [nik])
+  tgl_pengaduan DateTime
+  nik           String     @db.Char(16)
+  isi_laporan   String     @db.Text
+  foto          String     @db.VarChar(255)
+  tanggapan     Tanggapan?
 }
+//pengaduan kurang status
 
 model Petugas {
-  id_petugas    Int    @id @unique
-  nama_petugas String
-  username String @unique
-  password String
-  telp Int
-  tanggapan Tanggapan[]
+  id_petugas   Int         @id @unique @db.Int
+  nama_petugas String      @db.VarChar(35)
+  username     String      @unique @db.VarChar(25)
+  password     String      @db.VarChar(32)
+  telp         String      @db.VarChar(13)
+  tanggapan    Tanggapan[]
 }
-
 //petugas kurang level
 
 model Tanggapan {
-  id_tanggapan       Int  @id @default(autoincrement())
-  petugas   Petugas @relation(fields: [id_petugas], references: [id_petugas])
-  user   Pengaduan @relation(fields: [id_pengaduan], references: [id_pengaduan])
+  id_tanggapan  Int       @id @default(autoincrement()) @db.Int
+  id_pengaduan  Int       @unique
+  petugas       Petugas   @relation(fields: [id_petugas], references: [id_petugas])
+  user          Pengaduan @relation(fields: [id_pengaduan], references: [id_pengaduan])
   tgl_tanggapan DateTime
-  tanggapan String
-  id_petugas Int
-  id_pengaduan Int @unique
+  tanggapan     String    @db.Text
+  id_petugas    Int       @db.Int
 }
-
-
 
 // pengaduan blm ada enum

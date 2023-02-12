@@ -13,24 +13,23 @@ export const RegisterMasyarakat = async (req, res) => {
   const { error } = RegisterValidationMasyarakat(req.body);
   const { nik, username, nama, password, telp } = req.body;
 
-
   if (error)
     return res.status(400).json({
       status: res.statusCode,
       message: error.details[0].message,
     });
 
-  // if NIK exist
-  const nikExist = await prisma.Masyarakat.findUnique({
-    where: {
-      nik: nik,
-    },
-  });
-  if (nikExist)
-    return res.status(400).json({
-      status: res.statusCode,
-      message: "NIK Sudah digunakan !",
+    // if NIK exist
+    const nikkExist = await prisma.Masyarakat.findUnique({
+      where: {
+        nik: nik,
+      },
     });
+    if (nikkExist)
+      return res.status(400).json({
+        status: res.statusCode,
+        message: "NIK Sudah digunakan !",
+      });
 
     // if username exist
   const usernamekExist = await prisma.Masyarakat.findUnique({
@@ -45,7 +44,7 @@ export const RegisterMasyarakat = async (req, res) => {
     });
 
   // Hash Password
-  const salt = await bcrypt.genSalt(10);
+  const salt = await bcrypt.genSalt(8);
   const hashPassword = await bcrypt.hash(password, salt);
 
   //Create User
@@ -69,7 +68,6 @@ export const RegisterMasyarakat = async (req, res) => {
 export const LoginMasyarakat = async (req, res) => {
   const { username, password } = req.body;
 
-  // if username exist
   const user = await prisma.Masyarakat.findUnique({
     where: {
       username: username,

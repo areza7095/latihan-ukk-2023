@@ -16,6 +16,7 @@ export const masyarakat_login = async data => {
 };
 
 export const masyarakat_register = async data => {
+  console.log(data)
   try {
     const result = await ApiManager('/masyarakat/register', {
       method: 'POST',

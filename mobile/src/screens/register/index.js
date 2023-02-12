@@ -116,9 +116,9 @@ export default function Register({navigation}) {
       return 'Password must not contain Whitespaces.';
     }
 
-    const isValidLength = /^.{10,16}$/;
+    const isValidLength = /^.{10,13}$/;
     if (!isValidLength.test(value)) {
-      return 'Password must be 10-16 Characters Long.';
+      return 'Password must be 10-13 Characters Long.';
     }
 
 
@@ -133,13 +133,14 @@ export default function Register({navigation}) {
     const checkTelp = checkTelpValidity(telp);
     if (!checkNik || !checkUsername || !checkName || !checkPassowrd || !checkTelp) {
       masyarakat_register({
-        nik: parseInt(nik),
+        nik: nik.toString(),
         nama: nama.toUpperCase(),
         username: username.toLocaleLowerCase(),
         password: password,
-        telp: parseInt(telp)
+        telp: telp.toString()
       })
         .then(result => {
+          console.log("result:", result)
           if (result.status == 200) {
             alert("Akun anda Berhasil Dibuat, Silahkan Login");
             navigation.replace('Login');
