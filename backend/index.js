@@ -17,8 +17,8 @@ import TanggapanRoute from "./routes/TanggapanRoute.js"
 //Init Express
 const app = express();
 
-
-app.use(cors())
+// CORS
+// app.use(cors());
 
 app.use(express.json());
 app.use(AuthRoute);

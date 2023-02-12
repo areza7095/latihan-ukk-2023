@@ -67,7 +67,6 @@ export const RegisterMasyarakat = async (req, res) => {
 //Login Masyrakat
 export const LoginMasyarakat = async (req, res) => {
   const { username, password } = req.body;
-  // const { id_user, login_date } = req.body;
 
   // if username exist
   const user = await prisma.Masyarakat.findUnique({
@@ -100,7 +99,7 @@ export const LoginMasyarakat = async (req, res) => {
     }
   );
 
-  //Get NIK for getting Information 
+  // Get NIK for getting Information 
   const Nik = await prisma.Masyarakat.findUnique({
     where: {
       username: username,
@@ -113,6 +112,7 @@ export const LoginMasyarakat = async (req, res) => {
   
 
   res.header("x-auth-token", token).json({
+    message: "success",
     accessToken: token,
     nik: Nik.nik
   });
@@ -177,7 +177,7 @@ export const RegisterPetugas = async (req, res) => {
   }
 };
 
-//Login Masyrakat
+//Login Petugas
 export const LoginPetugas = async (req, res) => {
   const { username, password } = req.body;
   // const { id_user, login_date } = req.body;
