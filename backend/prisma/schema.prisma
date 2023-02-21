@@ -20,10 +20,11 @@ model Masyarakat {
 }
 
 model Pengaduan {
-  id_pengaduan  Int        @id @default(autoincrement()) @db.Int 
+  id_pengaduan  Int        @id  @db.Int 
   author        Masyarakat @relation(fields: [nik], references: [nik])
   tgl_pengaduan DateTime
   nik           String     @db.Char(16)
+  jdl_laporan String  @db.VarChar(255)
   isi_laporan   String     @db.Text
   foto          String     @db.VarChar(255)
   tanggapan     Tanggapan?

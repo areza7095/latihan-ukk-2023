@@ -4,7 +4,8 @@ import {
     GetAllPengaduanbyNik,
     GetAllPengaduan,
     GetAllPengaduanbyID,
-    GetPengaduanbyID
+    GetPengaduanbyID,
+    DeletePengaduan
  } from "../Controller/PengaduanController.js";
 
 const router = express.Router();
@@ -26,6 +27,9 @@ router.get('/api/petugas/allpengaduan', GetAllPengaduan);
 
 //Get All Pengaduan by Id Pengaduan
 router.get('/api/petugas/pengaduanbyid', GetAllPengaduanbyID);
+
+//Delete Pengaduan
+router.delete('/api/masyarakat/hapuspengaduan', DeletePengaduan)
 
 
 
