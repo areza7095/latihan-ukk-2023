@@ -55,7 +55,8 @@ export const RegisterMasyarakat = async (req, res) => {
         username: username,
         nama: nama,
         password: hashPassword,
-        telp: telp
+        telp: telp,
+        verifikasi: "pending"
       },
     });
     res.json(SaveUser);
@@ -86,6 +87,22 @@ export const LoginMasyarakat = async (req, res) => {
       status: res.statusCode,
       message: "Password Anda Salah!",
     });
+
+  //validasi verifikasi
+  const verifikasi = await prisma.Masyarakat.findUnique({
+    where: {
+      username: username,
+    },
+    select: {
+      verifikasi: true
+    }
+  });
+
+  if (verifikasi.verifikasi === 'pending')
+    return res.status(400).json({
+      status: res.statusCode,
+      message: "Akun anda belum terverifikasi, mohon hubungi Petugas",
+    })
 
   // membuat token menggunkan JWT
   const token = jwt.sign(
@@ -123,24 +140,14 @@ export const LoginMasyarakat = async (req, res) => {
 //Register Petugas
 export const RegisterPetugas = async (req, res) => {
   const { error } = RegisterValidationPetugas(req.body);
-  const { id_petugas, nama_petugas, username, password, telp } = req.body;
+  const { nama_petugas, username, password, telp, level } = req.body;
+  const today = new Date();
+  const id_petugas = `${today.getFullYear()}${today.getHours()}${today.getMinutes()}${today.getSeconds()}`
 
   if (error)
     return res.status(400).json({
       status: res.statusCode,
       message: error.details[0].message,
-    });
-
-  // if ID Petugas exist
-  const idPetugasExist = await prisma.Petugas.findUnique({
-    where: {
-      id_petugas: id_petugas,
-    },
-  });
-  if (idPetugasExist)
-    return res.status(400).json({
-      status: res.statusCode,
-      message: "ID Petugas Sudah digunakan !",
     });
 
     // if username exist
@@ -163,11 +170,12 @@ export const RegisterPetugas = async (req, res) => {
   try {
     const SaveUser = await prisma.Petugas.create({
       data: {
-        id_petugas: id_petugas,
+        id_petugas: parseInt(id_petugas),
         nama_petugas: nama_petugas,
         username: username,
         password: hashPassword,
-        telp: telp
+        telp: telp,
+        level: level
       },
     });
     res.json(SaveUser);
@@ -213,12 +221,13 @@ export const LoginPetugas = async (req, res) => {
   );
 
   //Get NIK for getting Information 
-  const Nik = await prisma.Petugas.findUnique({
+  const userData = await prisma.Petugas.findUnique({
     where: {
       username: username,
     },
     select: {
-      id_petugas: true
+      id_petugas: true,
+      level: true
     }
   });
 
@@ -226,7 +235,7 @@ export const LoginPetugas = async (req, res) => {
 
   res.header("x-auth-token", token).json({
     accessToken: token,
-    nik: Nik.nik
+    userData: userData
   });
 
   //console JWT token

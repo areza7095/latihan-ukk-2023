@@ -5,7 +5,7 @@ const prisma = new PrismaClient();
 //Pengaduan untuk masyarakat
 export const SendPengaduan = async (req, res) => {
   const { id_pengaduan, nik, isi_laporan, jdl_laporan } = req.body;
-  console.log(req.body)
+  // console.log(req.body)
   // console.log(req.file)
   const today = new Date();
   

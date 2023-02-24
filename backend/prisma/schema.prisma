@@ -17,6 +17,7 @@ model Masyarakat {
   password  String      
   telp      String      @db.VarChar(13)
   pengaduan Pengaduan[]
+  verifikasi Verifikasi
 }
 
 model Pengaduan {
@@ -35,7 +36,7 @@ model Petugas {
   id_petugas   Int         @id @unique @db.Int
   nama_petugas String      @db.VarChar(35)
   username     String      @unique @db.VarChar(25)
-  password     String      @db.VarChar(32)
+  password     String      
   telp         String      @db.VarChar(13)
   tanggapan    Tanggapan[]
   level Role
@@ -61,4 +62,7 @@ enum Role {
   admin
   petugas
 }
-// pengaduan blm ada enum
+enum Verifikasi {
+  pending
+  terverifikasi
+}

@@ -2,8 +2,6 @@ import Joi from "@hapi/joi";
 
 const RegisterValidationPetugas = (data) => {
     const schema = Joi.object({
-        id_petugas: Joi.number()
-            .required(),
         nama_petugas: Joi.string()
             .required(),
         username: Joi.string()
@@ -12,6 +10,8 @@ const RegisterValidationPetugas = (data) => {
             .min(6)
             .required(),
         telp: Joi.number()
+            .required(),
+        level: Joi.string()
             .required(),
     })
 
