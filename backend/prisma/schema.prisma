@@ -28,8 +28,8 @@ model Pengaduan {
   isi_laporan   String     @db.Text
   foto          String     @db.VarChar(255)
   tanggapan     Tanggapan?
+  status Status
 }
-//pengaduan kurang status
 
 model Petugas {
   id_petugas   Int         @id @unique @db.Int
@@ -38,8 +38,8 @@ model Petugas {
   password     String      @db.VarChar(32)
   telp         String      @db.VarChar(13)
   tanggapan    Tanggapan[]
+  level Role
 }
-//petugas kurang level
 
 model Tanggapan {
   id_tanggapan  Int       @id @default(autoincrement()) @db.Int
@@ -51,4 +51,14 @@ model Tanggapan {
   id_petugas    Int       @db.Int
 }
 
+enum Status {
+  Tertunda
+  Proses
+  Selesai
+}
+
+enum Role {
+  admin
+  petugas
+}
 // pengaduan blm ada enum

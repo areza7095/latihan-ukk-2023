@@ -4,8 +4,11 @@ const prisma = new PrismaClient();
 
 //Pengaduan untuk masyarakat
 export const SendPengaduan = async (req, res) => {
-  const { id_pengaduan, nik, isi_laporan, tgl_pengaduan, jdl_laporan } = req.body;
-
+  const { id_pengaduan, nik, isi_laporan, jdl_laporan } = req.body;
+  console.log(req.body)
+  // console.log(req.file)
+  const today = new Date();
+  
   if (!req.file) {
     res.status(422).json({ msg: "Image Harus di Upload" });
   } else {
@@ -14,20 +17,19 @@ export const SendPengaduan = async (req, res) => {
     try {
       const Pengaduan = await prisma.Pengaduan.create({
         data: {
-          id_pengaduan: parseInt(id_pengaduan),
           nik: nik,
+          id_pengaduan: parseInt(id_pengaduan),
           jdl_laporan: jdl_laporan,
           isi_laporan: isi_laporan,
           foto: image,
-          tgl_pengaduan: tgl_pengaduan,
+          tgl_pengaduan: today,
+          status: "Tertunda"
         },
         include: {
           author: true,
           tanggapan: true,
         },
       });
-
-      //   });
       res.json(Pengaduan);
     } catch (error) {
       res.status(400).json({ msg: error.message });
@@ -105,7 +107,7 @@ export const GetAllPengaduanbyID = async (req, res) => {
 
 //Delete pengaduan
 export const DeletePengaduan= async (req, res) => {
-  const { id_pengaduan, nik } = req.body;
+  const { id_pengaduan } = req.body;
 
   try {
     const response = await prisma.Pengaduan.delete({

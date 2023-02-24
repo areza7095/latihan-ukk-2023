@@ -43,7 +43,8 @@ const fileFilter = (req, file, cb) => {
 };
 
 app.use(express.json());
-app.use(multer({storage: fileStorage, fileFilter: fileFilter}).single('foto'));
+app.use(express.urlencoded({ extended: true }));
+app.use(multer({storage: fileStorage, fileFilter: fileFilter}).single('fotoKejadian'));
 app.use('/images', express.static(path.join(__dirname, 'images')))
 app.use(AuthRoute);
 app.use(PengaduanRoute);
