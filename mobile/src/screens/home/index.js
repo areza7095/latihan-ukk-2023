@@ -1,14 +1,12 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+
 
 export default function Home({navigation}) {
   const [nik, setNik] = useState('');
 
-  const handleLogout = () => {
-    AsyncStorage.clear();
-    navigation.navigate('Login');
-  };
+  
 
   const retrieveNik = async () => {
     try {
@@ -23,10 +21,34 @@ export default function Home({navigation}) {
     }
   };
 
-  retrieveNik()
+  const handleLogout = () => {
+    AsyncStorage.clear();
+    navigation.navigate('Login');
+  };
+
+  const handleLihatPengaduan = () => {
+    navigation.replace('LihatPengaduan');
+  };
+
+  const handlekirimPengaduan = () => {
+    navigation.replace('kirimPengaduan');
+  };
+
+  useEffect(() => {
+    retrieveNik();
+  }, []);
+
+
   return (
     <View style={styles.container}>
-      <Text style={styles.text}>{nik}</Text>
+      <TouchableOpacity style={styles.button} onPress={handlekirimPengaduan}>
+        <Text style={styles.textButton}>Kirim Pengaduan</Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity style={styles.button} onPress={handleLihatPengaduan}>
+        <Text style={styles.textButton}>Lihat Pengaduan</Text>
+      </TouchableOpacity>
+
       <TouchableOpacity style={styles.button} onPress={handleLogout}>
         <Text style={styles.textButton}>Logout</Text>
       </TouchableOpacity>
