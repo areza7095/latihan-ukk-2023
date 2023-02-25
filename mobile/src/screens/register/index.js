@@ -136,7 +136,7 @@ export default function Register({navigation}) {
         .then(result => {
           console.log("result:", result)
           if (result.status == 200) {
-            alert("Akun anda Berhasil Dibuat, Silahkan Login");
+            alert("Akun anda Berhasil Dibuat, Mohon tunggu untuk proses verifikasi");
             navigation.replace('Login');
           } else {
             alert(result.message)
