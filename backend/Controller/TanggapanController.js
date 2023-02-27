@@ -15,7 +15,6 @@ export const SendTanggapan = async (req, res) => {
           id_pengaduan: id_pengaduan
         },
         include: {
-          author: true,
           user: true
         }
       });

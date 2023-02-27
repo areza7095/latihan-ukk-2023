@@ -12,6 +12,8 @@ dotenv.config();
 import AuthRoute from "./routes/AuthRoute.js";
 import PengaduanRoute from "./routes/PengaduanRoute.js";
 import TanggapanRoute from "./routes/TanggapanRoute.js";
+import MasyarakatRoute from "./routes/MasyarakatRoute.js";
+import PetugasRoute from "./routes/PetugasRoute.js";
 
 //Init Express
 const app = express();
@@ -43,12 +45,18 @@ const fileFilter = (req, file, cb) => {
 };
 
 app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+// app.use(express.urlencoded({ extended: true }));
+app.use(cors({
+  credentials: true,
+  origin: 'http://localhost:3000'
+}));
 app.use(multer({storage: fileStorage, fileFilter: fileFilter}).single('fotoKejadian'));
 app.use('/images', express.static(path.join(__dirname, 'images')))
 app.use(AuthRoute);
 app.use(PengaduanRoute);
 app.use(TanggapanRoute);
+app.use(MasyarakatRoute);
+app.use(PetugasRoute);
 
 // listen
 app.listen(process.env.PORT, () => {
