@@ -28,6 +28,7 @@ model Pengaduan {
   jdl_laporan String  @db.VarChar(255)
   isi_laporan   String     @db.Text
   foto          String     @db.VarChar(255)
+  lokasi        String      @db.VarChar(100)
   tanggapan     Tanggapan?
   status Status
 }
@@ -65,4 +66,5 @@ enum Role {
 enum Verifikasi {
   pending
   terverifikasi
+  banned
 }

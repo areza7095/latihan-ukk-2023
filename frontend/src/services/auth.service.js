@@ -28,6 +28,8 @@ const login = (username, password) => {
         localStorage.setItem("accessToken", JSON.stringify(response.data.accessToken));
         localStorage.setItem("idPetugas", JSON.stringify(response.data.userData.id_petugas));
         localStorage.setItem("level", JSON.stringify(response.data.userData.level));
+        localStorage.setItem("namaPetugas", JSON.stringify(response.data.userData.nama_petugas));
+        localStorage.setItem("telp", JSON.stringify(response.data.userData.telp));
       }
 
       return response.data;
@@ -38,6 +40,24 @@ const logout = () => {
   localStorage.removeItem("accessToken");
   localStorage.removeItem("idPetugas");
   localStorage.removeItem("level");
+};
+
+const UpdatePetugas = async (
+  id_petugas,
+  password,
+) => {
+  return axios
+    .put(API_URL + "/api/admin/updatePetugas", {
+      id_petugas: parseInt(id_petugas),
+      password: password,
+    })
+    .then((response) => {
+      // console.log(response)
+      if (response.status == 200) {
+      }
+
+      return response;
+    });
 };
 
 const getCurrentAccessToken = () => {
@@ -51,13 +71,24 @@ const getCurrentIdPetugas = () => {
 const getCurrentLevel = () => {
   return JSON.parse(localStorage.getItem("level"));
 };
+
+const getCurrentName = () => {
+  return JSON.parse(localStorage.getItem("namaPetugas"));
+};
+
+const getCurrentTelp = () => {
+  return JSON.parse(localStorage.getItem("telp"));
+};
 const authService = {
   signup,
   login,
   logout,
   getCurrentAccessToken,
   getCurrentIdPetugas,
-  getCurrentLevel
+  getCurrentLevel,
+  UpdatePetugas,
+  getCurrentName,
+  getCurrentTelp
 };
 
 export default authService;

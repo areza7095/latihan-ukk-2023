@@ -104,6 +104,12 @@ export const LoginMasyarakat = async (req, res) => {
       message: "Akun anda belum terverifikasi, mohon hubungi Petugas",
     })
 
+    if (verifikasi.verifikasi === 'banned')
+    return res.status(400).json({
+      status: res.statusCode,
+      message: "Mohon Maaf akun anda telah di banned oleh Petugas, Segera hubungi petugas",
+    })
+
   // membuat token menggunkan JWT
   const token = jwt.sign(
     {
@@ -115,13 +121,15 @@ export const LoginMasyarakat = async (req, res) => {
     }
   );
 
-  // Get NIK for getting Information 
-  const Nik = await prisma.Masyarakat.findUnique({
+  // Get Data Diri for getting Information 
+  const dataDiri = await prisma.Masyarakat.findUnique({
     where: {
       username: username,
     },
     select: {
-      nik: true
+      nik: true,
+      nama: true,
+      telp: true,
     }
   });
 
@@ -130,7 +138,7 @@ export const LoginMasyarakat = async (req, res) => {
   res.header("x-auth-token", token).json({
     message: "success",
     accessToken: token,
-    nik: Nik.nik
+    dataDiri: dataDiri
   });
 
   //console JWT token
@@ -227,7 +235,9 @@ export const LoginPetugas = async (req, res) => {
     },
     select: {
       id_petugas: true,
-      level: true
+      level: true,
+      nama_petugas: true,
+      telp: true
     }
   });
 

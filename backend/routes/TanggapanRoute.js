@@ -2,7 +2,8 @@ import express from "express";
 
 import { 
     SendTanggapan,
-    updateTanggapan
+    updateTanggapan,
+    updateStatusPengaduan
 } from "../Controller/TanggapanController.js";
 
 const router = express.Router();
@@ -15,5 +16,10 @@ router.post('/api/petugas/sendTanggapan', SendTanggapan);
 
 //Update Tanggapan
 router.put('/api/petugas/updateTanggapan', updateTanggapan);
+
+//Update Status 
+router.put('/api/petugas/updateStatusPengaduan', updateStatusPengaduan);
+
+
 
 export default router;

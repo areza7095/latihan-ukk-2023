@@ -15,37 +15,41 @@ import axios from 'axios';
 
 export default function KirimPengaduan({navigation}) {
   const [nik, setNik] = useState('');
+  const [accessToken, setAccessToken] = useState('');
   const [jdlLaporan, setJdlLaporan] = useState('');
   const [isiLaporan, setIsiLaporan] = useState('');
+  const [lokasi, setLokasi] = useState('');
   const [foto, setFoto] = useState(null);
   // const [data, setData] = useState(null);
 
   const today = new Date();
 
   useEffect(() => {
-    retrieveNik();
+    retrievePersonalInfo();
   }, []);
+
+  const retrievePersonalInfo = async () => {
+    try {
+      const nik = await AsyncStorage.getItem('nik');
+      const accessToken = await AsyncStorage.getItem('AccessToken');
+      if (accessToken != '') {
+        const nikString = nik
+        const nikInt = parseInt(nikString)
+        setNik(nikInt)
+        setAccessToken(accessToken)
+      }
+    } catch (error) {
+      alert( error)
+    }
+  };
 
   const handleBack = () => {
     navigation.navigate('Home');
   };
 
-  const retrieveNik = async () => {
-    try {
-      const value = await AsyncStorage.getItem('nik');
-      if (value !== null) {
-        const nikString = value;
-        const nikInt = parseInt(nikString);
-        setNik(nikInt);
-      }
-    } catch (error) {
-      alert(error);
-    }
-  };
-
   const handlekirimPengaduan = () => {
     const formData = new FormData();
-    const url = 'http://192.168.1.67:3303/api/masyarakat/pengaduan';
+    const url = 'http://169.254.176.137:3303/api/masyarakat/pengaduan';
 
     if (foto !== null) {
       formData.append('nik', nik.toString());
@@ -55,6 +59,7 @@ export default function KirimPengaduan({navigation}) {
       );
       formData.append('jdl_laporan', jdlLaporan);
       formData.append('isi_laporan', isiLaporan);
+      formData.append('lokasi', lokasi);
       formData.append('fotoKejadian', {
         uri: foto.uri,
         name: foto.fileName,
@@ -65,6 +70,7 @@ export default function KirimPengaduan({navigation}) {
         .post(url, formData, {
           headers: {
             'Content-Type': 'multipart/form-data',
+            'x-auth-token': `${accessToken}`
           },
         })
         .then(response => {
@@ -78,35 +84,11 @@ export default function KirimPengaduan({navigation}) {
           }
         })
         .catch(error => {
-          console.error(error);
+          alert(error.response.data.message);
         });
     } else {
       alert('Image Harus di Upload');
     }
-
-    // kirim_pengaduan({
-    //   // id_pengaduan: `${today.getFullYear()}${today.getHours()}${today.getMinutes()}${today.getSeconds()}`,
-    //   // nik: nik.toString(),
-    //   // jdl_laporan: jdlLaporan,
-    //   // isi_laporan: isiLaporan,
-    //   // tgl_pengaduan: Today,
-    //   formData
-    // })
-    //   .then(result => {
-    //     console.log('result:', result);
-    //     if (result.status == 200) {
-    //       alert(
-    //         'Laporan Anda Berhasil Dibuat, Silahkan menunggu info selanjutnya',
-    //       );
-    //       navigation.replace('Home');
-    //     } else {
-    //       alert(result.msg);
-    //     }
-    //   })
-    //   .catch(err => {
-    //     alert('error', err.msg);
-    //     console.log(err.msg)
-    //   });
   };
 
   const options = {
@@ -148,11 +130,19 @@ export default function KirimPengaduan({navigation}) {
           onChangeText={text => setIsiLaporan(text)}
         />
       </View>
+      <View style={styles.wrapperInput}>
+        <TextInput
+          style={styles.input}
+          placeholder="Lokasi"
+          value={lokasi}
+          onChangeText={text => setLokasi(text)}
+        />
+      </View>
 
       <TouchableOpacity style={styles.button} onPress={openGalery}>
         <Text style={styles.text}>Upload Photo</Text>
       </TouchableOpacity>
-      {nik == '' || jdlLaporan == '' || isiLaporan == '' ? (
+      {nik == '' || jdlLaporan == '' || isiLaporan == '' || lokasi == '' ? (
         <TouchableOpacity
           disabled
           style={styles.buttonDisable}

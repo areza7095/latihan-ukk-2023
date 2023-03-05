@@ -11,6 +11,11 @@ import Masyarakat from "./components/Masyarakat";
 import Tanggapan from "./components/Tanggapan";
 import Pengaduan from "./components/Pengaduan";
 import Petugas from "./components/Petugas";
+import './index.css'
+import UpdateTanggapan from "./components/UpdateTanggapan";
+import UpdateAkun from "./components/UpdateAkunPetugas";
+import UpdateAkunPetuga from "./components/UpdateAkunPetugas";
+import UpdateAkunPetugas from "./components/UpdateAkunPetugas";
 
 function App() {
   const [accessToken, setCurrentAccessToken] = useState(undefined);
@@ -37,8 +42,8 @@ function App() {
 
   const logOut = () => {
     AuthService.logout();
-    navigate("/login");
-    window.location.reload();
+    navigate("/duar");
+    // window.location.reload();
   };
 
   return (
@@ -75,10 +80,7 @@ function App() {
 
           {level == "petugas" && (
             <div className="navbar-nav ms-auto">
-              <Link to={"/masyarakat"} className="nav-link">
-                Masyarakat
-              </Link>
-              <Link to={"/tanggapan"} className="nav-link">
+              <Link to={"/updatetanggapan"} className="nav-link">
                 Tanggapan
               </Link>
 
@@ -89,38 +91,26 @@ function App() {
           )}
         </div>
         <div className="navbar-nav ms-auto">
-          {accessToken ? (
+          {accessToken && (
             <li className="nav-item">
-              <a href="/login" className="nav-link" onClick={logOut}>
+              <a href="/" className="nav-link" onClick={logOut}>
                 Logout
               </a>
             </li>
-          ) : (
-            <li className="nav-item">
-              <Link to={"/login"} className="nav-link">
-                Login
-              </Link>
-            </li>
-          )}
-
-          {level == "admin" && (
-            <li className="nav-item">
-              <Link to={"/signup"} className="nav-link">
-                Sign up
-              </Link>
-            </li>
-          )}
+          ) }
         </div>
       </nav>
 
       <div className="container mt-3">
         <Routes>
+          <Route path="/" element={<Login />} />
           <Route path="/home" element={<Home />} />
           <Route path="/petugas" element={<Petugas />} />
           <Route path="/masyarakat" element={<Masyarakat />} />
           <Route path="/pengaduan" element={<Pengaduan />} />
+          <Route path="/updatetanggapan" element={<UpdateTanggapan />} />
+          <Route path="/updateakun" element={<UpdateAkunPetugas />} />
           <Route path="/tanggapan" element={<Tanggapan />} />
-          <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
         </Routes>
       </div>

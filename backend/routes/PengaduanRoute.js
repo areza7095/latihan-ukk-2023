@@ -1,10 +1,10 @@
 import express from "express";
 import { 
     SendPengaduan,
-    GetAllPengaduanbyNik,
     GetAllPengaduan,
     GetAllPengaduanbyID,
     GetPengaduanbyID,
+    GetPengaduanbyNIK,
     DeletePengaduan
  } from "../Controller/PengaduanController.js";
 
@@ -14,22 +14,22 @@ const router = express.Router();
 import VerifyToken from '../Controller/VerifyTokenController.js';
 
 //Send Pengaduan
-router.post('/api/masyarakat/pengaduan', SendPengaduan);
+router.post('/api/masyarakat/pengaduan',VerifyToken ,SendPengaduan);
 
 //Get Pengaduan By NIK
-router.get('/api/masyarakat/pengaduanallbynik', GetAllPengaduanbyNik);
+router.post('/api/masyarakat/allpengaduanabynik',VerifyToken, GetPengaduanbyNIK);
 
 //Get Pengaduan By ID
-router.get('/api/masyarakat/pengaduanabyid', GetPengaduanbyID);
+router.get('/api/masyarakat/pengaduanabyid',VerifyToken, GetPengaduanbyID);
 
 //Get All Pengaduan 
 router.get('/api/petugas/allpengaduan', GetAllPengaduan);
 
 //Get All Pengaduan by Id Pengaduan
-router.get('/api/petugas/pengaduanbyid', GetAllPengaduanbyID);
+router.post('/api/petugas/pengaduanbyid', GetAllPengaduanbyID);
 
 //Delete Pengaduan
-router.delete('/api/masyarakat/hapuspengaduan', DeletePengaduan)
+router.delete('/api/masyarakat/hapuspengaduan',VerifyToken, DeletePengaduan)
 
 
 

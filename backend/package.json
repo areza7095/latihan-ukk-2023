@@ -1,5 +1,5 @@
 {
-  "name": "backend_ourschoolapp",
+  "name": "backend",
   "version": "1.0.0",
   "description": "",
   "type": "module",
@@ -7,10 +7,6 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon index.js"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/areza7095/backend_ourschoolapp.git"
   },
   "author": "",
   "license": "ISC",
@@ -26,10 +22,7 @@
     "multer": "^1.4.5-lts.1",
     "nodemon": "^2.0.4"
   },
-  "bugs": {
-    "url": "https://github.com/areza7095/backend_ourschoolapp/issues"
-  },
-  "homepage": "https://github.com/areza7095/backend_ourschoolapp#readme",
+
   "devDependencies": {
     "@hapi/joi": "^17.1.1",
     "@types/node": "^18.11.18",

@@ -17,6 +17,12 @@ const Masyarakat = () => {
 
   const navigate = useNavigate();
 
+  const updateVerifAkun = (nik, verifikasi) => {
+    const Nik = nik.toString()
+    pengaduanService.updateVerifAkun(Nik, verifikasi)
+    window.location.reload();
+  }
+
   useEffect(() => {
     pengaduanService.getAllMasyarakat().then(
       (response) => {
@@ -27,11 +33,23 @@ const Masyarakat = () => {
         // Invalid token
         if (error.response && error.response.status === 403) {
           AuthService.logout();
-          navigate("/login");
+          navigate("/");
           window.location.reload();
         }
       }
     );
+
+    const accessToken = AuthService.getCurrentAccessToken();
+    const level = AuthService.getCurrentLevel();
+
+
+    if(!accessToken){
+      navigate("/");
+    }
+
+    if(level == 'petugas'){
+      navigate("/home");
+    }
   }, []);
 
   return (
@@ -41,10 +59,11 @@ const Masyarakat = () => {
           <TableHead>
             <TableRow>
               <TableCell>NIK</TableCell>
-              <TableCell align="right">Nama Lengkap</TableCell>
-              <TableCell align="right">Username</TableCell>
-              <TableCell align="right">Telepon</TableCell>
-              <TableCell align="right">Verifikasi</TableCell>
+              <TableCell align="center">Nama Lengkap</TableCell>
+              <TableCell align="center">Username</TableCell>
+              <TableCell align="center">Telepon</TableCell>
+              <TableCell align="center">Verifikasi</TableCell>
+              <TableCell align="center">Action</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -54,12 +73,26 @@ const Masyarakat = () => {
                 sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
               >
                 <TableCell component="th" scope="row">
-                  {row.nama}
+                  {row.nik}
                 </TableCell>
-                <TableCell align="right">{row.nama}</TableCell>
-                <TableCell align="right">{row.username}</TableCell>
-                <TableCell align="right">{row.telp}</TableCell>
-                <TableCell align="right">{row.verifikasi}</TableCell>
+                <TableCell align="center">{row.nama}</TableCell>
+                <TableCell align="center">{row.username}</TableCell>
+                <TableCell align="center">{row.telp}</TableCell>
+                <TableCell align="center">{row.verifikasi}</TableCell>
+                <TableCell align="center">
+                  <div
+                    className="btn-group"
+                    role="group"
+                    aria-label="Basic example"
+                  >
+                    <button type="button" className="btn btn-success" onClick={() => {updateVerifAkun(row.nik, "terverifikasi")}}>
+                    Aktifkan
+                    </button>
+                    <button type="button" className="btn btn-danger" onClick={() => {updateVerifAkun(row.nik, "banned")}}>
+                      Non Aktifkan
+                    </button>
+                  </div>
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>

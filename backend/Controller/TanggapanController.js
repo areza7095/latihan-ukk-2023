@@ -49,3 +49,23 @@ export const updateTanggapan = async (req, res) => {
       res.status(400).json({ msg: error.message });
     }
 };
+
+//Update Status Tanggapan
+export const updateStatusPengaduan = async (req, res) => {
+    const { id_pengaduan, status } = req.body;
+    try {
+      const Pengaduan = await prisma.Pengaduan.update({
+        data: {
+          status: status
+        },
+        where: {
+          id_pengaduan: id_pengaduan
+        }
+      });
+  
+      //   });
+      res.json(Pengaduan);
+    } catch (error) {
+      res.status(400).json({ msg: error.message });
+    }
+};

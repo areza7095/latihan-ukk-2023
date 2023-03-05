@@ -1,7 +1,8 @@
 import express from "express";
 import { 
     GetAllPetugas,
-    DeletePetugas
+    DeletePetugas,
+    UpdatePetugas
  } from "../Controller/PetugasController.js";
 
 const router = express.Router();
@@ -14,7 +15,10 @@ router.get('/api/petugas/allpetugas', GetAllPetugas);
 
 
 //Delete Petugas
-router.delete('/api/masyarakat/hapuspetugas', DeletePetugas)
+router.delete('/api/admin/hapuspetugas', DeletePetugas)
+
+//Update Petugas
+router.put('/api/admin/updatePetugas', UpdatePetugas)
 
 
 

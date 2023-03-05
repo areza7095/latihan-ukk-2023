@@ -4,9 +4,8 @@ const prisma = new PrismaClient();
 
 //Pengaduan untuk masyarakat
 export const SendPengaduan = async (req, res) => {
-  const { id_pengaduan, nik, isi_laporan, jdl_laporan } = req.body;
-  // console.log(req.body)
-  // console.log(req.file)
+  const { id_pengaduan, nik, isi_laporan, jdl_laporan, lokasi } = req.body;
+
   const today = new Date();
   
   if (!req.file) {
@@ -23,11 +22,8 @@ export const SendPengaduan = async (req, res) => {
           isi_laporan: isi_laporan,
           foto: image,
           tgl_pengaduan: today,
+          lokasi: lokasi,
           status: "Tertunda"
-        },
-        include: {
-          author: true,
-          tanggapan: true,
         },
       });
       res.json(Pengaduan);
@@ -38,11 +34,14 @@ export const SendPengaduan = async (req, res) => {
 };
 
 //Get pengaduan by NIK untuk masyarakat
-export const GetAllPengaduanbyNik = async (req, res) => {
+export const GetPengaduanbyNIK = async (req, res) => {
   const { nik } = req.body;
 
   try {
     const response = await prisma.Pengaduan.findMany({
+      include: {
+        tanggapan: true,
+      },
       where: {
         nik: nik,
       },
@@ -52,6 +51,7 @@ export const GetAllPengaduanbyNik = async (req, res) => {
     res.status(500).json({ msg: error.message });
   }
 };
+
 
 //Get pengaduan by Id_pengaduan untuk masyarakat
 export const GetPengaduanbyID = async (req, res) => {
@@ -78,6 +78,7 @@ export const GetAllPengaduan = async (req, res) => {
     const response = await prisma.Pengaduan.findMany({
       include: {
         tanggapan: true,
+        author: true
       },
     });
     res.status(200).json(response);

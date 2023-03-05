@@ -61,10 +61,15 @@ export default function Login({navigation}) {
       })
         .then(result => {
           if (result.status == 200) {
-            const nikInt = result.data.nik;
-            const nikString = nikInt.toString()
-            AsyncStorage.setItem('AccessToken', result.data.accessToken);
-            AsyncStorage.setItem('nik', nikString);
+            const nik = result.data.dataDiri.nik;
+            const accessToken = result.data.accessToken
+            const nama = result.data.dataDiri.nama
+            const telp = result.data.dataDiri.telp
+
+            AsyncStorage.setItem('AccessToken', accessToken);
+            AsyncStorage.setItem('nama', nama);
+            AsyncStorage.setItem('telp', telp);
+            AsyncStorage.setItem('nik', nik);
             navigation.replace('Home');
           } else {
             alert(result.message)
@@ -85,7 +90,7 @@ export default function Login({navigation}) {
 
   return (
     <View style={styles.container}>
-      <View style={styles.wrapperInput}>
+      <View style={styles.usernameInput}>
         <TextInput
           style={styles.input}
           placeholder="Username"
@@ -131,6 +136,16 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     marginHorizontal: 20,
   },
+
+  usernameInput:{
+    borderWidth: 0.5,
+    borderRadius: 5,
+    borderColor: 'grey',
+    marginTop: 10,
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+
   wrapperInput: {
     borderWidth: 0.5,
     borderRadius: 5,

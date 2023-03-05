@@ -1,6 +1,7 @@
 import express from "express";
 import { 
-    GetAllMasyarakat
+    GetAllMasyarakat,
+    updateStatusVerifikasi
  } from "../Controller/MasyarakatController.js";
 
 const router = express.Router();
@@ -10,5 +11,8 @@ import VerifyToken from '../Controller/VerifyTokenController.js';
 
 //Get All Masyarakat
 router.get('/api/petugas/allmasyarakat', GetAllMasyarakat);
+
+// Update Status Verif Masyarakat 
+router.put('/api/petugas/updateStatusVerifikasi', updateStatusVerifikasi);
 
 export default router;
